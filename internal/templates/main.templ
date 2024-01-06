@@ -1,0 +1,130 @@
+package templates
+
+import "strings"
+import "strconv"
+
+templ Header() {
+        <!DOCTYPE html>
+        <head>
+            <meta charset="UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+            <script src="/assets/js/htmx.min.js"></script>
+            <script src="https://cdn.tailwindcss.com"></script>
+
+            <script>
+                Alpine.magic('clipboard', () => {
+                    return subject => navigator.clipboard.writeText(subject)
+                })
+            </script>
+        </head>
+}
+
+templ MainPage() {
+    @Header()
+    @NavigationLinks()
+    <body class="dark bg-slate-800 dark:text-white">
+        <div class="p-10">
+            Please use this utility to improve your day to day life.
+        </div>
+    </body>
+}
+
+templ NavigationLinks() {
+    <div id="nav" class="p-5">
+    <a class="text-lg font-large pr-4" href="/">LIST OPS</a>
+    <a class="text-md font-medium p-4" href="/sets">Sets</a>
+    <a href="/chunks">Chunks</a>
+    <hr class="h-px mt-8 mb-0 bg-gray-200 border-0 dark:bg-gray-700"/>
+    </div>
+}
+
+templ SetsForm() {
+    @Header()
+    @NavigationLinks()
+    <body class="dark bg-slate-800 dark:text-white">
+    <form class="pt-2 px-10" id="diff-form" hx-post="/calcdiff" hx-trigger="submit" hx-target="#diff-results">
+        <div class="mb-4 ">
+                    <label for="groupa" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Group A</label>
+                    <textarea id="groupa" name="groupa" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Group A..."></textarea>
+                </div>
+                <div class="mb-4 ">
+                                    <label for="groupb" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Group A</label>
+                                    <textarea id="groupb" name="groupb" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Group B..."></textarea>
+                                </div>
+                                <div class="mb-4 ">
+         <label for="delimiter" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Delimiter</label>
+            <select class="rounded-md p-4 text-gray-900 dark:text-white bg-gray-700" name="delimiter" id="delimiter">
+                <option value="newline">Newline</option>
+                <option value="comma">Comma</option>
+            </select>
+        </div>
+        <div class="mb-4 ">
+         <label for="difftype" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Set Operation</label>
+            <select class="rounded-md p-4 text-gray-900 dark:text-white bg-gray-700" name="difftype" id="difftype">
+                <option value="adiffb">A - B</option>
+                <option value="bdiffa">B - A</option>
+                <option value="inter">A ∩ B (Intersection)</option>
+                <option value="union">A ∪ B (Union)</option>
+            </select>
+        </div>
+        <button  class="py-2 px-3 bg-sky-500 rounded-md " id="adiffb" name="adiffb" ht-trigger="clicked">Calculate</button>
+    </form>
+    <div class="mb-4 p-10">
+        <textarea class="block p-2.5 h-full w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="diff-results" rows="30"></textarea>
+    </div>
+    </body>
+}
+templ SetResponder(operationResult string) {
+    {operationResult}
+}
+templ ChunkResponder(operationResult [][]string, outputDelimeter string) {
+    for i, r := range operationResult {
+        <figure class="dark md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
+        <div class="text-wrap text-balance" x-data="{ copied: false }">
+            <h1 class="p-2 text-3xl font-bold">Chunk { strconv.Itoa(i+1) }</h1>
+            <div class="w-75 p-2.5 text-wrap hover:text-balance text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" @click="$clipboard($el.innerHTML); alert('Copied text for chunk')">
+                { strings.Join(r, outputDelimeter) }
+            </div>
+        </div>
+        </figure>
+    }
+}
+
+templ notFound() {
+    <div>404 - Not found</div>
+}
+
+templ ChunksForm() {
+    
+    @Header()
+    @NavigationLinks()
+    <body class="dark bg-slate-800 dark:text-white">
+    <form class="pt-2 px-10" id="chunk-form" hx-post="/calcchunks" hx-trigger="submit" hx-target="#chunks-results">
+        <div class="mb-4 ">
+            <label for="slist" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">List</label>
+            <textarea id="slist" name="seriallist" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="List..."></textarea>
+        </div>
+        <div class="mb-4 ">
+         <label for="delimiter" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Delimiter</label>
+            <select class="rounded-md p-4 text-gray-900 dark:text-white bg-gray-700" name="delimiter" id="delimiter">
+                <option value="newline">Newline</option>
+                <option value="comma">Comma</option>
+            </select>
+        </div>
+                <div class="mb-4 ">
+         <label for="output-delimiter" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Output</label>
+            <select class="rounded-md p-4 text-gray-900 dark:text-white bg-gray-700" name="output-delimiter" id="output-delimiter">
+                <option value="with">Commas with spaces</option>
+                <option value="without">Commas without spaces</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label class="block mb-2 text-md font-medium text-gray-900 dark:text-white" for="size">Size</label>
+            <input class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="size" placeholder="20"></input>
+        </div>
+        <button class="py-2 px-3 bg-sky-500 rounded-md " id="chunk" name="chunk" ht-trigger="clicked">Chunk</button>
+    </form>
+    <div class="px-10" id="chunks-results"></div>
+    </body>
+}

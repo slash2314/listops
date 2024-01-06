@@ -1,0 +1,6 @@
+.air.toml
+tailwind.config.js
+*_templ.go
+tmp/*
+.idea
+build/*
