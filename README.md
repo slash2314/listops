@@ -29,7 +29,7 @@ to experiment with HTMX and Templ.
 * ``` ./listops```
 * Or if you run it with a port 
   * ```
-    PORT=8080 ./listops
+    ADDRESS="localhost:8080" ./listops
     ```
 
 ## Authors
@@ -40,7 +40,7 @@ Dex Wood
 
 ## Version History
 
-* 2023-01-05
+* 2023-01-11
     * Initial release
 
 ## License

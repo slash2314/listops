@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 )
 
 //go:generate templ generate
@@ -50,14 +49,12 @@ func main() {
 
 	})
 	apiRoutes(route)
-	listenPort := 3000
-	portString := os.Getenv("PORT")
-	if portString != "" {
-		if parsedPort, err := strconv.Atoi(portString); err == nil {
-			listenPort = parsedPort
-		}
+	listenAddress := "127.0.0.1:3000"
+	listenAddressString := os.Getenv("ADDRESS")
+	if listenAddressString != "" {
+		listenAddress = listenAddressString
 	}
-	err := http.ListenAndServe(fmt.Sprintf("127.0.0.1:%d", listenPort), route)
+	err := http.ListenAndServe(fmt.Sprintf("%s", listenAddress), route)
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
