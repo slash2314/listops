@@ -24,12 +24,12 @@ var diffTestData = []SetTestData{
 type CreateSetTestData struct {
 	a    []string
 	b    []string
-	set1 map[string]bool
-	set2 map[string]bool
+	set1 map[string]Empty
+	set2 map[string]Empty
 }
 
 var createSetsTestData = []CreateSetTestData{
-	{a: []string{"a", "b"}, b: []string{"b", "c"}, set1: map[string]bool{"a": true, "b": true}, set2: map[string]bool{"b": true, "c": true}},
+	{a: []string{"a", "b"}, b: []string{"b", "c"}, set1: map[string]Empty{"a": {}, "b": {}}, set2: map[string]Empty{"b": {}, "c": {}}},
 }
 
 type ExtractListTestData struct {
@@ -72,7 +72,7 @@ func TestDiff(t *testing.T) {
 func TestCreateSets(t *testing.T) {
 	for _, st := range createSetsTestData {
 		set1, set2 := createSets(st.a, st.b)
-		if !reflect.DeepEqual(st.set1, set1) || !reflect.DeepEqual(st.set2, set2) {
+		if !reflect.DeepEqual(st.set1, set1.inner) || !reflect.DeepEqual(st.set2, set2.inner) {
 			t.Fatalf("Expected: %v and %v Got: %v and %v\n", st.set1, st.set2, set1, set2)
 		}
 	}

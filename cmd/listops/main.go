@@ -8,19 +8,20 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 //go:generate templ generate
 
 // Embed static assets
 //
-//go:embed assets/*
+//go:embed assets
 var f embed.FS
 
 func main() {
 	route := gin.New()
-	// route.Static("/assets/", "./assets/")
-	route.StaticFS("/assets", http.FS(f))
+	route.StaticFS("/static/", http.FS(f))
 	route.GET("/sets", func(c *gin.Context) {
 		component := templates.SetsForm()
 		err := component.Render(c.Request.Context(), c.Writer)
@@ -54,9 +55,21 @@ func main() {
 	if listenAddressString != "" {
 		listenAddress = listenAddressString
 	}
+	handleSignals()
 	err := http.ListenAndServe(fmt.Sprintf("%s", listenAddress), route)
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
+}
+
+func handleSignals() {
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
+	go func() {
+		select {
+		case <-sigs:
+			os.Exit(0)
+		}
+	}()
 }

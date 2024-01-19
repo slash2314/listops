@@ -9,7 +9,7 @@ templ Header() {
             <meta charset="UTF-8"/>
             <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
             <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-            <script src="/assets/js/htmx.min.js"></script>
+            <script src="/static/assets/js/htmx.min.js"></script>
             <script src="https://cdn.tailwindcss.com"></script>
 
             <script>
@@ -45,13 +45,13 @@ templ SetsForm() {
     <body class="dark bg-slate-800 dark:text-white">
     <form class="pt-2 px-10" id="diff-form" hx-post="/calcdiff" hx-trigger="submit" hx-target="#diff-results">
         <div class="mb-4 ">
-                    <label for="groupa" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Group A</label>
-                    <textarea id="groupa" name="groupa" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Group A..."></textarea>
-                </div>
-                <div class="mb-4 ">
-                                    <label for="groupb" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Group A</label>
-                                    <textarea id="groupb" name="groupb" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Group B..."></textarea>
-                                </div>
+            <label for="groupa" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Group A</label>
+            <textarea id="groupa" name="groupa" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Group A..."></textarea>
+        </div>
+        <div class="mb-4 ">
+            <label for="groupb" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Group A</label>
+            <textarea id="groupb" name="groupb" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Group B..."></textarea>
+        </div>
                                 <div class="mb-4 ">
          <label for="delimiter" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Delimiter</label>
             <select class="rounded-md p-4 text-gray-900 dark:text-white bg-gray-700" name="delimiter" id="delimiter">
@@ -68,7 +68,7 @@ templ SetsForm() {
                 <option value="union">A ∪ B (Union)</option>
             </select>
         </div>
-        <button  class="py-2 px-3 bg-sky-500 rounded-md " id="adiffb" name="adiffb" ht-trigger="clicked">Calculate</button>
+        <button  class="py-2 px-3 bg-sky-500 rounded-md " id="calcbtn" name="calcbtn" ht-trigger="clicked">Calculate</button>
     </form>
     <div class="mb-4 p-10">
         <textarea class="block p-2.5 h-full w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="diff-results" rows="30"></textarea>
